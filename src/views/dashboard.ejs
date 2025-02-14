@@ -24,6 +24,14 @@
                     <%= post.userId.username %>:
                 </strong>
                 <%= post.content %> (at <%= post.createdAt %>)
+
+                <br> <small>Likes: <%= post.likes.length %></small>
+                
+                <!-- Like Button -->
+                <form action="/posts/<%=post._id %>/like" method="POST" style="display:inline;">
+                    <button type="submit">Like</button>
+                </form>
+
             </li>
             <% }) %>
     </ul>
