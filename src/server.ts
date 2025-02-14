@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 import path from "path";
 import authRoutes from "./routes/authRoutes";
 import mongoose from "mongoose";
+import postRoutes from "./routes/postRoutes";
 
 dotenv.config();
 const app = express();
@@ -25,6 +26,7 @@ mongoose.connect(process.env.MONGO_URI as string)
 
 // Routes
 app.use("/", authRoutes);
+app.use(postRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

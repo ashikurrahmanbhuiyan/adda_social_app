@@ -1,10 +1,16 @@
 import { Request, Response } from "express";
 import User from "../models/User";
+import Post from "../models/UserPost";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 dotenv.config();
 const JWT_SECRET = process.env.JWT_SECRET as string;
+
+// Interface for Request object
+interface AuthRequest extends Request {
+    user?: { userId: string };
+}
 
 
 // Render Login Page
@@ -19,13 +25,13 @@ export const getRegister = (req: Request, res: Response) => {
 
 // Handle User Registration
 export const postRegister = async (req: Request, res: Response) => {
-    const { username, password } = req.body;
+    const {name, username, password } = req.body;
 
     try {
         const userExists = await User.findOne({ username });
         if (userExists) return res.render("register", { error: "User already exists" });
 
-        const newUser = new User({ username, password });
+        const newUser = new User({name, username, password });
         await newUser.save();
         res.redirect("/login");
     } catch (error) {
@@ -34,7 +40,7 @@ export const postRegister = async (req: Request, res: Response) => {
 };
 
 // Handle User Login
-export const postLogin = async (req: Request, res: Response) => {
+export const postLogin = async (req: AuthRequest, res: Response) => {
     const { username, password } = req.body;
     try {
         const user = await User.findOne({ username });
@@ -52,8 +58,14 @@ export const postLogin = async (req: Request, res: Response) => {
 };
 
 // Handle Dashboard
-export const getDashboard = (req: Request, res: Response) => {
-    res.render("dashboard");
+export const getDashboard = async (req : any, res: Response) => {
+    try {
+            const user = await User.findById(req.user.userId).select("-password"); // Fetch user data except password
+            const posts = await Post.find().populate("userId", "username"); // Get posts with user info
+            res.render("dashboard", { user, posts });
+        } catch (error) {
+            res.status(500).send("Server error");
+        }
 };
 
 // Handle Logout

@@ -6,8 +6,28 @@
 </head>
 
 <body>
+    <!-- <%= user.username %>
+    <p>Your User ID: <%= user._id %></p> -->
     <h2>Welcome to Dashboard</h2>
     <p>You are successfully logged in!</p>
+
+    <h3>Create a Post</h3>
+    <form action="/posts" method="POST">
+        <textarea name="content" placeholder="Write something..." required></textarea>
+        <button type="submit">Post</button>
+    </form>
+    
+    <h3>All Posts</h3>
+    <ul>
+        <% posts.forEach(post=> { %>
+            <li><strong>
+                    <%= post.userId.username %>:
+                </strong>
+                <%= post.content %> (at <%= post.createdAt %>)
+            </li>
+            <% }) %>
+    </ul>
+
     <a href="/logout"><button>Logout</button></a>
 </body>
 
