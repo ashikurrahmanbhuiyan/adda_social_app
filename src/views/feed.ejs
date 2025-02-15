@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Dashboard</title>
+</head>
+
+<body>
+    <h2>Feed</h2>
+        <h3>Create a Post</h3>
+        <form action="/posts" method="POST">
+            <textarea name="content" placeholder="Write something..." required></textarea>
+            <button type="submit">Post</button>
+        </form>
+
+    <h3>All Posts</h3>
+    <ul>
+        <% posts.forEach(post=> { %>
+            <li><strong>
+                    <%= post.userId.username %>:
+                </strong>
+                <%= post.content %> (at <%= post.createdAt %>)
+
+                        <br> <small>Likes: <%= post.likes.length %></small>
+
+                        <!-- Like Button -->
+                        <form action="/posts/<%=post._id %>/like" method="POST" style="display:inline;">
+                            <button type="submit">Like</button>
+                        </form>
+
+
+                        <h4>Comments</h4>
+                        <ul>
+                            <% post.comments.forEach(comment=> { %>
+                                <li><strong>
+                                        <%= comment.userId.username %>:
+                                    </strong>
+                                    <%= comment.text %>
+                                </li>
+                                <% }) %>
+                        </ul>
+
+                        <!-- Add Comment -->
+                        <form action="/posts/<%= post._id %>/comment" method="POST">
+                            <input type="text" name="text" placeholder="Add a comment" required>
+                            <button type="submit">Comment</button>
+                        </form>
+
+            </li>
+            <% }) %>
+    </ul>
+
+    <a href="/dashboard"><button>Back</button></a>
+</body>
+
+</html>

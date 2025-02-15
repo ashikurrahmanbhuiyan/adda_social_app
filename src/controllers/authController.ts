@@ -61,7 +61,10 @@ export const postLogin = async (req: AuthRequest, res: Response) => {
 export const getDashboard = async (req : any, res: Response) => {
     try {
             const user = await User.findById(req.user.userId).select("-password"); // Fetch user data except password
-            const posts = await Post.find().populate("userId", "username"); // Get posts with user info
+            const posts = await Post.find({ userId: req.user.userId }) // Fetch posts by user  
+                .populate("userId", "username") // Get posts with user info
+                .populate("comments.userId", "username"); // Get comments with user info
+            // res.status(200).json({ user, posts });
             res.render("dashboard", { user, posts });
         } catch (error) {
             res.status(500).send("Server error");

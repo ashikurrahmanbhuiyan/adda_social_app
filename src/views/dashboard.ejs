@@ -32,6 +32,24 @@
                     <button type="submit">Like</button>
                 </form>
 
+
+                <h4>Comments</h4>
+                <ul>
+                    <% post.comments.forEach(comment=> { %>
+                        <li><strong>
+                                <%= comment.userId.username %>:
+                            </strong>
+                            <%= comment.text %>
+                        </li>
+                        <% }) %>
+                </ul>
+                
+                <!-- Add Comment -->
+                <form action="/posts/<%= post._id %>/comment" method="POST">
+                    <input type="text" name="text" placeholder="Add a comment" required>
+                    <button type="submit">Comment</button>
+                </form>
+
             </li>
             <% }) %>
     </ul>
