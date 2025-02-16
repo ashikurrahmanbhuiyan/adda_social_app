@@ -5,8 +5,8 @@ This is a simple social media application built with Node.js, Express, TypeScrip
 
 1. **Clone the repository:**
     ```sh
-    git clone https://github.com/ashikurrahmanbhuiyan/demo_social_app
-    cd demo_social_app
+    git clone https://github.com/ashikurrahmanbhuiyan/adda_social_app
+    cd adda_social_app
     ```
 
 2. **Install dependencies:**
