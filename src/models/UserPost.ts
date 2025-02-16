@@ -11,7 +11,8 @@ const PostSchema = new mongoose.Schema({
     userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }, // Reference to User
     content: { type: String, required: true },
     comments: [CommentSchema],
-    likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }], // Reference to User
+    likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    sharedFrom: { type: mongoose.Schema.Types.ObjectId, ref: "Post", default: null },
     createdAt: { type: Date, default: Date.now },
     visibility : { type: String, default: "public" },
 });

@@ -16,30 +16,37 @@
                 </strong>
                 <%= post.content %> (at <%= post.createdAt %>)
 
-                        <br> <small>Likes: <%= post.likes.length %></small>
+                    <% if (post.sharedFrom) { %>
+                        <p><em>Shared from another post</em></p>
+                        <% } %>
+                            <form action="/posts/<%= post._id %>/share" method="POST">
+                                <button type="submit">Share</button>
+                            </form>
 
-                        <!-- Like Button -->
-                        <form action="/posts/<%=post._id %>/like" method="POST" style="display:inline;">
-                            <button type="submit">Like</button>
-                        </form>
+                    <br> <small>Likes: <%= post.likes.length %></small>
+
+                    <!-- Like Button -->
+                    <form action="/posts/<%=post._id %>/like" method="POST" style="display:inline;">
+                        <button type="submit">Like</button>
+                    </form>
 
 
-                        <h4>Comments</h4>
-                        <ul>
-                            <% post.comments.forEach(comment=> { %>
-                                <li><strong>
-                                        <%= comment.userId.username %>:
-                                    </strong>
-                                    <%= comment.text %>
-                                </li>
-                                <% }) %>
-                        </ul>
+                    <h4>Comments</h4>
+                    <ul>
+                        <% post.comments.forEach(comment=> { %>
+                            <li><strong>
+                                    <%= comment.userId.username %>:
+                                </strong>
+                                <%= comment.text %>
+                            </li>
+                            <% }) %>
+                    </ul>
 
-                        <!-- Add Comment -->
-                        <form action="/posts/<%= post._id %>/comment" method="POST">
-                            <input type="text" name="text" placeholder="Add a comment" required>
-                            <button type="submit">Comment</button>
-                        </form>
+                    <!-- Add Comment -->
+                    <form action="/posts/<%= post._id %>/comment" method="POST">
+                        <input type="text" name="text" placeholder="Add a comment" required>
+                        <button type="submit">Comment</button>
+                    </form>
 
             </li>
             <% }) %>

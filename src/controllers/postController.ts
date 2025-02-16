@@ -127,3 +127,45 @@ export const commentOnPost = async (req: AuthRequest, res: Response): Promise<vo
     }
 };
 
+// Share a post (Only for friends)
+export const sharePost = async (req: AuthRequest, res: Response): Promise<void> => {
+    try {
+        const { id } = req.params;
+        const userId = req.user?.userId;
+
+        const user = await User.findById(userId).populate("friends");
+
+        if (!user) {
+            res.status(404).json({ message: "User not found" });
+            return ;
+        }
+
+        const originalPost = await Post.findById(id);
+
+        if (!originalPost) {
+            res.status(404).json({ message: "Post not found" });
+            return ;
+        }
+
+        // Check if the original post's owner is a friend
+        if (!user.friends.some(friend => friend._id.toString() === originalPost.userId.toString())) {
+            res.status(403).json({ message: "You can only share posts from friends" });
+            return ;
+        }
+
+        // Create a new shared post
+        const sharedPost = new Post({
+            userId,
+            content: originalPost.content, // Same content as original
+            sharedFrom: originalPost._id, // Reference to the original post
+        });
+
+        await sharedPost.save();
+
+        res.status(201).json({ message: "Post shared successfully", post: sharedPost });
+    } catch (error) {
+        console.error("Error sharing post:", error);
+        res.status(500).json({ message: "Server error" });
+    }
+};
+
