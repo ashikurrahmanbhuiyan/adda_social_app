@@ -28,14 +28,16 @@ export const createPost = async (req: AuthRequest, res: Response) => {
     }
 };
 
-// Get all posts (with user details)
+// Get all posts filtered by friend (with user details)
 export const getPosts = async (req: AuthRequest, res: Response) => {
     try {
         const user = await User.findById(req.user?.userId);
         const friendsIds = user?.friends.map(friend => friend._id.toString()) || [];
         friendsIds.push(req.user?.userId || "");
 
-        const posts = await Post.find({userId:{$in: friendsIds}}).populate("userId", "username"); // Get posts with user info
+        const posts = await Post.find({userId:{$in: friendsIds}})
+        .populate("userId", "name") // Get posts with user info
+        .populate("comments.userId", "name"); // Get comments with user info
         // res.status(200).json(posts);
         res.render("feed", { posts });
     } catch (error) {
@@ -120,7 +122,7 @@ export const commentOnPost = async (req: AuthRequest, res: Response): Promise<vo
 
         await post.save();
         // res.status(201).json({ message: "Comment added", comments: post.comments });
-        res.redirect("/dashboard");
+        res.redirect("/posts/feed");
     } catch (error) {
         console.error("Error commenting on post:", error);
         res.status(500).json({ message: "Server error" });

@@ -62,8 +62,8 @@ export const getDashboard = async (req : any, res: Response) => {
     try {
         const user = await User.findById(req.user.userId).select("-password"); // Fetch user data except password
         const posts = await Post.find({ userId: req.user.userId }) // Fetch posts by user  
-            .populate("userId", "username") // Get posts with user info
-            .populate("comments.userId", "username"); // Get comments with user info
+            .populate("userId", "name") // Get posts with user info
+            .populate("comments.userId", "name"); // Get comments with user info
 
         const friendRequests = await User.findById(req.user.userId).populate("friendRequests", "username");
         const friends = await User.findById(req.user.userId).populate("friends", "username");
