@@ -5,6 +5,7 @@ import { redirectIfAuthenticated } from "../middlewares/redirectIfAuthenticated"
 
 const router = Router();
 
+router.get("/",redirectIfAuthenticated, getLogin);
 router.get("/login",redirectIfAuthenticated, getLogin);
 router.post("/login", postLogin);
 router.get("/register", redirectIfAuthenticated, getRegister);

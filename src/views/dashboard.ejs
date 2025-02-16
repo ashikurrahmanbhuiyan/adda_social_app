@@ -11,6 +11,37 @@
     <h2>Welcome to Dashboard</h2>
     <p>You are successfully logged in!</p>
 
+
+    <h3>Send Friend Request</h3>
+    <form action="/friend-request-sent" method="POST">
+        <input type="text" name="IdToRequest" placeholder="Enter user ID to send request" required>
+        <button type="submit">Send Request</button>
+    </form>
+    
+    <h3>Pending Friend Requests</h3>
+    <ul>
+        <% friendRequests.forEach(request=> { %>
+            <li>
+                <%= request.username %>
+                    <form action="/friend-request/<%= request._id %>/accept" method="POST" style="display:inline;">
+                        <button type="submit">Accept</button>
+                    </form>
+            </li>
+            <% }) %>
+    </ul>
+    
+    <h3>Friends List</h3>
+    <ul>
+        <% friends.forEach(friend=> { %>
+            <li>
+                <%= friend.username %>
+            </li>
+            <% }) %>
+    </ul>
+
+
+
+
     <h3>Create a Post</h3>
     <form action="/posts" method="POST">
         <textarea name="content" placeholder="Write something..." required></textarea>

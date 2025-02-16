@@ -5,6 +5,7 @@ import path from "path";
 import authRoutes from "./routes/authRoutes";
 import mongoose from "mongoose";
 import postRoutes from "./routes/postRoutes";
+import friendRoutes from "./routes/friendRoutes";
 
 dotenv.config();
 const app = express();
@@ -25,8 +26,9 @@ mongoose.connect(process.env.MONGO_URI as string)
     .catch(err => console.error(err));
 
 // Routes
-app.use("/", authRoutes);
+app.use(authRoutes);
 app.use(postRoutes);
+app.use(friendRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

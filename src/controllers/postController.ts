@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import Post from "../models/UserPost";
+import User from "../models/User";
 import mongoose from "mongoose";
 
 interface AuthRequest extends Request {
@@ -30,7 +31,11 @@ export const createPost = async (req: AuthRequest, res: Response) => {
 // Get all posts (with user details)
 export const getPosts = async (req: AuthRequest, res: Response) => {
     try {
-        const posts = await Post.find().populate("userId", "username email"); // Get posts with user info
+        const user = await User.findById(req.user?.userId);
+        const friendsIds = user?.friends.map(friend => friend._id.toString()) || [];
+        friendsIds.push(req.user?.userId || "");
+
+        const posts = await Post.find({userId:{$in: friendsIds}}).populate("userId", "username"); // Get posts with user info
         // res.status(200).json(posts);
         res.render("feed", { posts });
     } catch (error) {
@@ -40,11 +45,10 @@ export const getPosts = async (req: AuthRequest, res: Response) => {
 };
 
 // Get a single post
-
 export const getPost = async (req: AuthRequest, res: Response) => {
     try {
         const { id } = req.params;
-        const post = await Post.findById(id).populate("userId", "username email");
+        const post = await Post.findById(id).populate("userId", "username");
 
         if (!post) {
             res.status(404).json({ message: "Post not found" });
