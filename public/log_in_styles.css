@@ -10,6 +10,10 @@ body {
     margin: 0;
 }
 
+.container{
+    width: 42%;
+}
+
 
 /* Form Inputs */
 input {
