@@ -1,0 +1,193 @@
+openapi: 3.0.0
+info:
+  title: Adda App API
+  version: 1.0.0
+  description: API documentation for the Demo Social App
+servers:
+  - url: http://localhost:3000
+    description: Local server
+paths:
+  /login:
+    get:
+      summary: Render login page
+      responses:
+        '200':
+          description: Login page rendered
+    post:
+      summary: Handle user login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: User logged in successfully
+        '401':
+          description: Invalid credentials
+  /register:
+    get:
+      summary: Render registration page
+      responses:
+        '200':
+          description: Registration page rendered
+    post:
+      summary: Handle user registration
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '201':
+          description: User registered successfully
+        '400':
+          description: Invalid input
+  /dashboard:
+    get:
+      summary: Render user dashboard
+      responses:
+        '200':
+          description: Dashboard rendered
+        '401':
+          description: Unauthorized
+  /logout:
+    get:
+      summary: Handle user logout
+      responses:
+        '200':
+          description: User logged out successfully
+  /posts:
+    post:
+      summary: Create a new post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                content:
+                  type: string
+                visibility:
+                  type: string
+                  enum: [public, private]
+      responses:
+        '201':
+          description: Post created successfully
+        '400':
+          description: Invalid input
+  /posts/feed:
+    get:
+      summary: Get all posts filtered by friends
+      responses:
+        '200':
+          description: List of posts
+  /posts/{id}:
+    get:
+      summary: Get a single post by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Post details
+        '404':
+          description: Post not found
+  /posts/{postId}/like:
+    post:
+      summary: Like or unlike a post
+      parameters:
+        - in: path
+          name: postId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Post liked/unliked successfully
+        '404':
+          description: Post not found
+  /posts/{postId}/comment:
+    post:
+      summary: Comment on a post
+      parameters:
+        - in: path
+          name: postId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                text:
+                  type: string
+      responses:
+        '201':
+          description: Comment added successfully
+        '400':
+          description: Invalid input
+  /friend-request-sent:
+    post:
+      summary: Send a friend request
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: string
+      responses:
+        '200':
+          description: Friend request sent successfully
+        '400':
+          description: Invalid input
+  /friend-request/{userId}/accept:
+    post:
+      summary: Accept a friend request
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Friend request accepted successfully
+        '404':
+          description: Friend request not found
+  /friend-requests:
+    get:
+      summary: Get pending friend requests
+      responses:
+        '200':
+          description: List of pending friend requests
+  /friends:
+    get:
+      summary: Get friends list
+      responses:
+        '200':
+          description: List of friends
