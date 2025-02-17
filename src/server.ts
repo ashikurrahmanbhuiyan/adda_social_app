@@ -6,7 +6,6 @@ import authRoutes from "./routes/authRoutes";
 import mongoose from "mongoose";
 import postRoutes from "./routes/postRoutes";
 import friendRoutes from "./routes/friendRoutes";
-import swaggerJsdoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 import yaml from 'yamljs';
 
@@ -32,6 +31,8 @@ mongoose.connect(process.env.MONGO_URI as string)
 app.use(authRoutes);
 app.use(postRoutes);
 app.use(friendRoutes);
+
+// Swagger
 const swaggerDocument = yaml.load('./swagger.yaml');
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
