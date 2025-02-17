@@ -1,6 +1,16 @@
 
 This is a simple social media application built with Node.js, Express, TypeScript, and MongoDB. It allows users to register, log in, create posts, send friend requests, and interact with posts.
 
+## Adda App
+<p align="center">
+    Visit the App
+</p>
+<p align="center">
+  <strong>https://adda-social-app-test.onrender.com</strong>
+</p>
+
+
+
 ## Installation
 
 1. **Clone the repository:**
