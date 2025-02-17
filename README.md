@@ -5,9 +5,9 @@ This is a simple social media application built with Node.js, Express, TypeScrip
 <p align="center">
     Visit the App
 </p>
-<p align="center">
-  <strong>https://adda-social-app-test.onrender.com</strong>
-</p>
+<div align="center">
+  <strong>https://adda-social-app.onrender.com</strong>
+</div>
 
 
 
